@@ -1,8 +1,13 @@
 module.exports = {
-    name: "d4",
-    description: "rola d4",
-    execute(message, args){
-        const d4 = () => Math.floor(Math.random() * 4) + 1;
-        message.channel.send("Dado caiu em: " + d4());
+    name: 'd4',
+    description: 'rola dado de 4 lados',
+  async execute(message, args) {
+    if (args < 1){
+      args = 1;
     }
+    for (let i = 0; i < args; i++) {
+      const d4 = Math.floor(Math.random() * 4) + 1
+      await message.channel.send('Dado caiu em: ' + d4)
+    }
+  }
 }

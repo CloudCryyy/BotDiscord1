@@ -12,6 +12,7 @@
   },
   "author": "JooVitorSena",
   "license": "ISC",
+  "type": "commonjs",
   "bugs": {
     "url": "https://github.com/JooVitorSena/BotDiscord1/issues"
   },
