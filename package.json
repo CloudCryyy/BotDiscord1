@@ -8,15 +8,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/JooVitorSena/BotDiscord1.git"
+    "url": "git+https://github.com/CloudCryyy/BotDiscord1"
   },
-  "author": "JooVitorSena",
+  "author": "CloudCryyy",
   "license": "ISC",
   "type": "commonjs",
   "bugs": {
-    "url": "https://github.com/JooVitorSena/BotDiscord1/issues"
+    "url": "https://github.com/CloudCryyy/BotDiscord1/issues"
   },
-  "homepage": "https://github.com/JooVitorSena/BotDiscord1#readme",
+  "homepage": "https://github.com/CloudCryyy/BotDiscord1#readme",
   "dependencies": {
     "discord.js": "^14.6.0",
     "nodemon": "^2.0.22"
