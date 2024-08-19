@@ -1,93 +1,41 @@
-const Discord = ({ Client, GatewayIntentBits } = require('discord.js'))
-const client = new Client({
-  intents: [
-    GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildMessages,
-    GatewayIntentBits.MessageContent
-  ]
-})
-const config = require('./config.json')
+import { REST, Routes } from 'discord.js'
+import { Client, GatewayIntentBits } from 'discord.js';
+import 'dotenv/config'
 
-client.on('ready', () => {
-  console.log(`louie tá na área`)
-})
 
-const fs = require('fs')
+const commands = [
+  {
+    name: 'ping',
+    description: 'Responde com um Pong!',
+  },
 
-client.commands = new Discord.Collection()
+];
 
-const commandsFiles = fs
-  .readdirSync('./commands/')
-  .filter(file => file.endsWith('.js'))
-for (const file of commandsFiles) {
-  const command = require(`./commands/${file}`)
+const rest = new REST({version: '10'}).setToken(process.env.TOKEN);
 
-  client.commands.set(command.name, command)
+const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+
+try {
+  console.log('Iniciando Aplicação com comandos (/)')
+  
+  await rest.put(Routes.applicationCommands(process.env.CLIENT_ID), { body: commands });
+
+  console.log('Comandos (/) aplicados com sucesso');
+
+} catch (error) {
+  console.log(error)
 }
 
-client.on('messageCreate', message => {
-  if (!message.content.startsWith(config.prefix) || message.author.bot) return
+client.on('ready', () => {
+  console.log(`Louie tá na área, tag ${client.user.tag}`)
+});
 
-  const args = message.content.slice(config.prefix.length).trim().split(/ +/)
-  const command = args.shift().toLowerCase()
+client.on('interactionCreate', async interaction => {
+  if (!interaction.isChatInputCommand()) return;
 
-  switch (command) {
-    case 'ping':
-      message.channel.send(`O ping está em aprox. ${client.ws.ping}`);
-      break;
-
-    case 'd2':
-      client.commands.get('d2').execute(message, args);
-      break;
-
-    case 'd4':
-      client.commands.get('d4').execute(message, args);
-      break;
-
-    case 'd6':
-      client.commands.get('d6').execute(message, args);
-      break;
-
-    case 'd8':
-      client.commands.get('d8').execute(message, args);
-      break;
-
-    case 'd10':
-      client.commands.get('d10').execute(message, args);
-      break;
-
-    case 'd12':
-      client.commands.get('d12').execute(message, args);
-      break;
-
-    case 'd20':
-      client.commands.get('d20').execute(message, args);
-      break;
-
-    case 'd100':
-      client.commands.get('d100').execute(message, args);
-      break;
-
-    case 'd1000':
-      client.commands.get('d1000').execute(message, args);
-      break;
-
-    case 'openbook':
-      client.commands.get('openbook').execute(message, args);
-      break;
-
-    case 'cowboy':
-      client.commands.get('gian').execute(message, args);
-      break;
-
-    case 'limpar':
-      client.commands.get('limpar').execute(message, args);
-      break;
-
-    default:
-      message.channel.send('Vc digitou o comando errado ou um que não existe');
-      break;
+  if (interaction.commandName === 'ping'){
+    await interaction.reply('Pong');
   }
 })
 
-client.login(config.token)
+client.login(process.env.TOKEN)

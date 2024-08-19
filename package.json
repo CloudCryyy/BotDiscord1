@@ -12,13 +12,13 @@
   },
   "author": "CloudCryyy",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "bugs": {
     "url": "https://github.com/CloudCryyy/BotDiscord1/issues"
   },
   "homepage": "https://github.com/CloudCryyy/BotDiscord1#readme",
   "dependencies": {
-    "discord.js": "^14.6.0",
-    "nodemon": "^2.0.22"
+    "discord.js": "^14.15.3",
+    "dotenv": "^16.4.5"
   }
 }
