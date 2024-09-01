@@ -1,9 +1,9 @@
 import { REST, Routes } from 'discord.js'
 import { Client, IntentsBitField, Collection } from 'discord.js';
 import 'dotenv/config';
-import fs from "node:fs";
-import path from 'node:path';
-import data from './commands/ping.js'
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 const client = new Client({ 
   intents: [
@@ -14,23 +14,29 @@ const client = new Client({
   ],  
 });
 
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const rest = new REST({ version: '10'}).setToken(process.env.TOKEN);
 const commands = [];
-const commandsPath = path.join(import.meta.dirname, 'commands');
+const commandsPath = path.join(__dirname, './commands');
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith(".js"));
 client.commands = new Collection();
 
-for (const file of commandFiles){
-  const filePath = path.join(commandsPath, file);
-  const command = import(filePath);
-
-  if('data' in command && 'execute' in command){
-    client.commands.set(command.data.name, command);
-    commands.push(command);
-  } else {
-    console.log(`[ATENÇÃO] não achei 'data' e/ou 'execute' no comando ${filePath}`);
+(async ()=> {
+  for (const file of commandFiles){
+    const filePath = path.join(commandsPath, file);
+    const { default: command } = await import(filePath);
+  
+    if(command.data  && command.execute){
+      
+      client.commands.set(command.data.name, command);
+      commands.push(command);
+    } else {
+      console.log(`[ATENÇÃO] não achei 'data' e/ou 'execute' no comando ${filePath}`);
+    }
   }
-}
+})();
 
 
 (async () => {
