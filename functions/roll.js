@@ -11,7 +11,7 @@ async function rollMultipleDice(vezes, interaction, valorDoDado) {
         }
     } else {
         for (let i = 1; i < vezes; i++) {
-            const dado = rollDice(valor)
+            const dado = rollDice(20)
             if(dado == 20) {
                 await interaction.followUp('CRÍTICO SUPERIOR')
             } else if(dado == 1){
@@ -45,4 +45,12 @@ async function rollMultipleDiceWithAdd(adicional, vezes, interaction, valorDoDad
     
 }
 
-export { rollDice, rollMultipleDice, rollMultipleDiceWithAdd };
+async function searchingCritic(dado, interaction){
+    if(dado == 20) {
+        await interaction.reply('CRÍTICO SUPERIOR')
+    } else if(dado == 1){
+        await interaction.reply('CRÍTICO INFERIOR')
+    }
+}
+
+export { rollDice, rollMultipleDice, rollMultipleDiceWithAdd, searchingCritic };
