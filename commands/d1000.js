@@ -3,8 +3,8 @@ import { rollMultipleDice, rollDice, rollMultipleDiceWithAdd } from '../function
 
 export default {
     data: new SlashCommandBuilder()
-        .setName("d6")
-        .setDescription("Rola um d6")
+        .setName("d1000")
+        .setDescription("Rola um d1000")
         .addNumberOption((option) =>
             option
                 .setName('vezes')
@@ -17,7 +17,7 @@ export default {
         async execute(interaction){
             const vezes = interaction.options.get('vezes');
             const adicionalRecebido = interaction.options.get('adicional');
-            const valorDoDado = 6
+            const valorDoDado = 1000
             let adicional = 0
             if (adicionalRecebido != null){
                 adicional = adicionalRecebido.value

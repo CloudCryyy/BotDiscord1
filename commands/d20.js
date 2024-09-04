@@ -1,4 +1,5 @@
 import { SlashCommandBuilder } from "discord.js";
+import { rollMultipleDice, rollDice, rollMultipleDiceWithAdd } from '../functions/roll.js'
 
 export default {
     data: new SlashCommandBuilder()
@@ -21,53 +22,32 @@ export default {
                 adicional = adicionalRecebido.value
             }
             if(vezes.value > 1){
-                const dado = Math.floor(Math.random() * 20) + 1       
-                if(dado == 20) {
-                    await interaction.reply('CRÍTICO SUPERIOR')
-                } else if(dado == 1){
-                    await interaction.reply('CRÍTICO INFERIOR')
+                const dado = rollDice(20)
+                searchingCritic(dado)
+                if(adicional >=1){  
+                    await interaction.reply('Dado caiu em: ' + dado + '\nCom adicionais fica: ' + (dado + adicional))
+                    rollMultipleDiceWithAdd(adicional, vezes.value, interaction)
                 } else {
-                    if(adicional >=1){        
-                        await interaction.reply('Dado caiu em: ' + dado + '\nCom adicionais fica: ' + (dado + adicional))
-                        for (let i = 1; i < vezes.value; i++) {
-                            const dado = Math.floor(Math.random() * 20) + 1
-                            if(dado == 20) {
-                                await interaction.followUp('CRÍTICO SUPERIOR')
-                            } else if(dado == 1){
-                                await interaction.followUp('CRÍTICO INFERIOR')
-                            } else {
-                                await interaction.followUp('Dado caiu em: ' + dado + '\nCom adicionais fica: ' + (dado + adicional))
-                            }
-                        }
-                    } else {
-                        await interaction.reply('Dado caiu em: ' + dado)
-                        for (let i = 1; i < vezes.value; i++) {
-                            const dado = Math.floor(Math.random() * 20) + 1
-                            if(dado == 20) {
-                                await interaction.followUp('CRÍTICO SUPERIOR')
-                            } else if(dado == 1){
-                                await interaction.followUp('CRÍTICO INFERIOR')
-                            } else {
-                                await interaction.followUp('Dado caiu em: ' + dado)
-                            }
-                        }
-                    }   
-                }
+                    await interaction.reply('Dado caiu em: ' + dado)
+                    rollMultipleDice(vezes.value, interaction)
+                }   
             } else if(vezes.value == 1){
-                const dado = Math.floor(Math.random() * 20) + 1
-                if(dado == 20) {
-                    await interaction.reply('CRÍTICO SUPERIOR')
-                } else if(dado == 1){
-                    await interaction.reply('CRÍTICO INFERIOR')
+                const dado = rollDice(20)
+                searchingCritic(dado)
+                if(adicional >=1) { 
+                    await interaction.reply('Dado caiu em: ' + dado + '\nCom adicionais fica: ' + (dado + adicional))
                 } else {
-                    if(adicional >=1) { 
-                        await interaction.reply('Dado caiu em: ' + dado + '\nCom adicionais fica: ' + (dado + adicional))
-                    } else {
-                        await interaction.reply('Dado caiu em: ' + dado)
-                    }
+                    await interaction.reply('Dado caiu em: ' + dado)
                 }
             } else {
                 await interaction.reply("Você digitou alguma coisa errada, por favor repita o comando digitando um número positivo")
             }
         }
+}
+async function searchingCritic(dado){
+    if(dado == 20) {
+        await interaction.reply('CRÍTICO SUPERIOR')
+    } else if(dado == 1){
+        await interaction.reply('CRÍTICO INFERIOR')
+    }
 }
